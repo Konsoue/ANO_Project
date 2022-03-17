@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  height: 100%;
+}
+
+.left {
+  width: 30%;
+  border-right: 1px solid #ccc;
+}
+
+.right {
+  position: relative;
+  flex: 1;
+}
+
+#tridiv {
+  width: 100%;
+}

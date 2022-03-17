@@ -1,0 +1,22 @@
+@import '~antd/dist/antd.css';
+
+body {
+  --pit: 0deg;
+  --rol: 0deg;
+  --yam: 0deg;
+}
+
+.siderbar-container {
+  position: 'fixed';
+  overflow: 'auto';
+  height: calc(100vh - 50px);
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.ant-layout-header {
+  height: 50px;
+  background-color: white;
+  box-shadow: inset -1px -4px 12px 5px rgb(0 0 0 / 10%);
+}
