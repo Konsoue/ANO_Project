@@ -1,0 +1,11 @@
+# build
+
+client/build
+server/build
+client/dist
+
+# dependencies
+
+client/node_modules
+server/node_modules
+
