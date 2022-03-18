@@ -21,7 +21,9 @@
 3. 使用 websocket 协议，与应用程序通信
 
 开启服务器的方式：
-在 server 目录下：`node index`
+在 server 目录下：
+1. `npm install`
+2. `node index`
 
 ## 应用程序
 
@@ -33,5 +35,7 @@
 3. PID 数据的解析，封装，显示
 
 
-开启应用程序的方法
-在 client 目录下：`npm start && npm run electron`
+开启应用程序的方式
+在 client 目录下：
+1. `npm install`
+2. `npm start && npm run electron`
