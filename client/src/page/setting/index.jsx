@@ -1,30 +1,49 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import EditableTable from './EditableTable'
-import { Button, Space } from 'antd';
-import { defaultDataSource } from './EditableTable/tableDefault'
+import { Button, Space, message } from 'antd';
 import { deepClone } from '@/utils';
 import websocket from '@/utils/websocket'
-import { tableDataToPIDdata } from './handleData'
+import { tableDataToPIDdata, PIDToTableData, dataSource, resetTableData } from './handleData'
 import './index.css'
 
 const Setting = () => {
   const tableRef = useRef()
 
+  useEffect(() => {
+    const callback = (result) => {
+      if (result.code === 2) {
+        PIDToTableData(result.data)
+      }
+    }
+    websocket.onMessage(callback);
+  }, [])
+
   const writePID = () => {
     const { data } = tableRef.current
     const result = tableDataToPIDdata(data)
     websocket.send({ code: 10, data: result })
+    if (websocket.isOpen()) {
+      message.success('PID 写入成功')
+    } else {
+      message.info('请打开串口')
+    }
   }
 
   const readPID = () => {
-    const { setData, data } = tableRef.current
-    const newData = deepClone(data)
+    const { setData } = tableRef.current
+    const newData = deepClone(dataSource)
     setData(newData)
+    if (websocket.isOpen()) {
+      message.success('PID 读取成功')
+    } else {
+      message.info('请打开串口')
+    }
   }
 
   const resetPID = () => {
     const { setData } = tableRef.current
-    setData(defaultDataSource)
+    resetTableData()
+    setData(dataSource)
   }
 
   return (

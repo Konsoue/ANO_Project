@@ -6,7 +6,6 @@ import './index.css'
 
 const Control = () => {
   const statistics = useSelector(state => state.statistics)
-  console.log(statistics);
 
   return (
     <div className="flex-center-container">

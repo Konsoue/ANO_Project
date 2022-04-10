@@ -23,3 +23,12 @@
 .ant-table-row .ant-table-cell:nth-child(11) {
   background-color: rgb(218, 246, 250) !important;
 }
+
+
+.setting-container .ant-table-thead>tr>th,
+.setting-container .ant-table-tbody>tr>td,
+.setting-container .ant-table tfoot>tr>th,
+.setting-container .ant-table tfoot>tr>td {
+  padding: 5px 2px;
+  text-align: center;
+}

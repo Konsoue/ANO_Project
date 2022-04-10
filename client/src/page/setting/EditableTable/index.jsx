@@ -49,16 +49,14 @@ const EditableTable = (props, ref) => {
   }, [dataSource, setDataSource])
 
   return (
-    <div>
-      <Table
-        components={components}
-        rowClassName={() => 'editable-row'}
-        bordered
-        dataSource={dataSource}
-        columns={tableColumn}
-        pagination={false}
-      />
-    </div>
+    <Table
+      components={components}
+      rowClassName={() => 'editable-row'}
+      bordered
+      dataSource={dataSource}
+      columns={tableColumn}
+      pagination={false}
+    />
   )
 }
 

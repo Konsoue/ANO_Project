@@ -44,7 +44,7 @@ const cutToLow8 = (string) => {
   let b = string[string.length - 2]
   a = /[A-Fa-f]/.test(a) ? map[a] : a
   b = /[A-Fa-f]/.test(b) ? map[b] : b
-  return b * 16 + a
+  return b * 16 + a * 1
 }
 
 /**
@@ -86,11 +86,14 @@ const isActionInfo = (buffer) => {
 const isPIDInfo = (buffer) => {
   if (buffer[0] === 0xaa
     && buffer[1] === 0xaa
-    && /1[0-5]/.test(buffer[2])) {
+    && buffer[2] > 15
+    && buffer[2] < 22
+  ) {
     return true
   }
   return false
 }
+
 /**
  * 解析无人机发送的 PID 数据
  * @param {Node Buffer} buffer
@@ -99,8 +102,13 @@ const isPIDInfo = (buffer) => {
 const parserPIDInfo = (buffer) => {
   let i = 3
   const contentLength = buffer[i++]
-  if (!buffer[i + contentLength]) return { isLess: true }
-
+  if (!buffer[i + contentLength - 1]) return { isLess: true }
+  const result = {}
+  const key = buffer[2] % 16 * 3
+  result[key + 1] = { P: changeInt16((buffer[i++] << 8) + buffer[i++]), I: changeInt16((buffer[i++] << 8) + buffer[i++]), D: changeInt16((buffer[i++] << 8) + buffer[i++]) }
+  result[key + 2] = { P: changeInt16((buffer[i++] << 8) + buffer[i++]), I: changeInt16((buffer[i++] << 8) + buffer[i++]), D: changeInt16((buffer[i++] << 8) + buffer[i++]) }
+  result[key + 3] = { P: changeInt16((buffer[i++] << 8) + buffer[i++]), I: changeInt16((buffer[i++] << 8) + buffer[i++]), D: changeInt16((buffer[i++] << 8) + buffer[i++]) }
+  return result
 }
 
 module.exports = {

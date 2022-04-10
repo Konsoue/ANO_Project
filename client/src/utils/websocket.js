@@ -4,6 +4,7 @@ class createWebSocket {
   constructor(url) {
     this.url = url
     this.ws = new WebSocket(this.url)
+    this.listener = []
     this.status = this.ws.readyState
   }
 
@@ -12,11 +13,15 @@ class createWebSocket {
   }
 
   onClose(callback) {
+    this.listener = []
     this.ws.onclose = callback
   }
   onMessage(callback) {
+    this.listener.push(callback)
     this.ws.onmessage = (event) => {
-      callback?.(JSON.parse(event.data))
+      for (let i = 0, len = this.listener.length; i < len; i++) {
+        this.listener[i](JSON.parse(event.data))
+      }
     }
   }
   send(data) {
@@ -24,6 +29,9 @@ class createWebSocket {
   }
   close() {
     this.ws.close()
+  }
+  isOpen() {
+    return this.ws.OPEN
   }
   reset(url = defaultUrl) {
     this.ws.close()
