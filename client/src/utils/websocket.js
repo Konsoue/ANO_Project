@@ -20,7 +20,7 @@ class createWebSocket {
     this.listener.push(callback)
     this.ws.onmessage = (event) => {
       for (let i = 0, len = this.listener.length; i < len; i++) {
-        this.listener[i](JSON.parse(event.data))
+        this.listener[i]?.(JSON.parse(event.data))
       }
     }
   }
@@ -29,9 +29,6 @@ class createWebSocket {
   }
   close() {
     this.ws.close()
-  }
-  isOpen() {
-    return this.ws.OPEN
   }
   reset(url = defaultUrl) {
     this.ws.close()

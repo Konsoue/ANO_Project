@@ -26,7 +26,7 @@ export const tableDataToPIDdata = (tableData) => {
   return result
 }
 
-export const dataSource = [
+export let dataSource = [
   {
     key: 'row-1',
     firstIndex: 1,
@@ -136,6 +136,10 @@ export const dataSource = [
     thirdD: 0,
   },
 ]
+
+export const setDataSource = (data) => {
+  dataSource = data
+}
 
 export const PIDToTableData = (PIDdata) => {
   const Indexs = Object.keys(PIDdata).map(key => Number(key))

@@ -1,5 +1,7 @@
 import React, { useEffect, useState, memo } from 'react'
 import { Form, Select, message, Button } from 'antd'
+import { SET_COM } from '@/store/actions'
+import { useDispatch } from 'react-redux'
 import websocket from '@/utils/websocket'
 
 const { Option } = Select
@@ -8,7 +10,7 @@ const { Item } = Form
 const COMControl = (props) => {
   const { isOpen, setOpen, form } = props
   const [comList, setComList] = useState([])
-
+  const dispatch = useDispatch()
   useEffect(() => {
     const callback = (result) => {
       if (result.code === 0) {
@@ -26,11 +28,13 @@ const COMControl = (props) => {
     }
     setOpen(true);
     value.code = 1
+    dispatch({ type: SET_COM, data: value.COM })
     websocket.send(value)
   }
 
   const closeCOM = () => {
     setOpen(false);
+    dispatch({ type: SET_COM, data: null })
     websocket.send({ code: -1 })
   }
 

@@ -29,14 +29,11 @@ const Header = () => {
     if (isOpen) {
       const callback = (result) => {
         if (result.code === 1) {
-          dispatch({ type: UPDATE_STATISTICS, data: result.data });
+          dispatch({ type: UPDATE_STATISTICS, data: result.data })
           setStyleVariate(result.data)
         }
       }
       websocket.onMessage(callback);
-    }
-    return () => {
-      websocket.onMessage(null);
     }
   }, [isOpen])
 

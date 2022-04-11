@@ -7,6 +7,7 @@ const initState = {
     lock: 0,
     mode: 1,
   },
+  com: null,
 }
 
 

@@ -3,12 +3,19 @@ import EditableTable from './EditableTable'
 import { Button, Space, message } from 'antd';
 import { deepClone } from '@/utils';
 import websocket from '@/utils/websocket'
-import { tableDataToPIDdata, PIDToTableData, dataSource, resetTableData } from './handleData'
+import { useSelector } from 'react-redux'
+import {
+  tableDataToPIDdata,
+  PIDToTableData,
+  dataSource,
+  resetTableData,
+  setDataSource
+} from './handleData'
 import './index.css'
 
 const Setting = () => {
   const tableRef = useRef()
-
+  const com = useSelector(state => state.com)
   useEffect(() => {
     const callback = (result) => {
       if (result.code === 2) {
@@ -22,7 +29,8 @@ const Setting = () => {
     const { data } = tableRef.current
     const result = tableDataToPIDdata(data)
     websocket.send({ code: 10, data: result })
-    if (websocket.isOpen()) {
+    setDataSource(data)
+    if (com) {
       message.success('PID 写入成功')
     } else {
       message.info('请打开串口')
@@ -33,7 +41,7 @@ const Setting = () => {
     const { setData } = tableRef.current
     const newData = deepClone(dataSource)
     setData(newData)
-    if (websocket.isOpen()) {
+    if (com) {
       message.success('PID 读取成功')
     } else {
       message.info('请打开串口')

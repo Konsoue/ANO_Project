@@ -36,8 +36,7 @@ class createSerialPort {
       if (isActionInfo(data)) {
         const result = parserActionInfo(data)
         if (!result.isLess) connection.sendText(createMessage(result, 1))
-      }
-      if (isPIDInfo(data)) {
+      } else if (isPIDInfo(data)) {
         const result = parserPIDInfo(data)
         if (!result.isLess) connection.sendText(createMessage(result, 2))
       }
@@ -48,7 +47,9 @@ class createSerialPort {
   close() {
     this.port.close()
   }
-
+  logClose() {
+    this.port.on('close', () => console.log('port is closed'))
+  }
   logError() {
     this.port.on('error', (err) => console.log('error', err))
   }
