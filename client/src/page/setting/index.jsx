@@ -19,6 +19,7 @@ const Setting = () => {
   useEffect(() => {
     const callback = (result) => {
       if (result.code === 2) {
+        console.log(result);
         PIDToTableData(result.data)
       }
     }
@@ -41,6 +42,7 @@ const Setting = () => {
     const { setData } = tableRef.current
     const newData = deepClone(dataSource)
     setData(newData)
+    websocket.send({ code: 11 })
     if (com) {
       message.success('PID 读取成功')
     } else {

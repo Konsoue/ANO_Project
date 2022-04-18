@@ -17,6 +17,8 @@ const router = (message, connection) => {
     case 10:
       serialPort?.sendPIDToPlane(message.data)
       break;
+    case 11:
+      serialPort?.requestPIDFromPlane()
   }
 }
 

@@ -1,5 +1,12 @@
 const { SerialPort } = require('serialport')
-const { parserActionInfo, isActionInfo, isPIDInfo, cutToLow8, parserPIDInfo } = require('./protocol')
+const {
+  parserActionInfo,
+  isActionInfo,
+  isPIDInfo,
+  cutToLow8,
+  parserPIDInfo,
+  fixedPIDArrayToBuffer
+} = require('./protocol')
 const createMessage = require('./utils/createMessage')
 const { throttle } = require('./utils/throttle')
 
@@ -23,12 +30,16 @@ class createSerialPort {
 
   sendPIDToPlane(array) {
     for (let i = 0; i < array.length; i++) {
-      const pid = array[i]
-      pid.unshift(0xaa, 0xaf, 10 + i, 18)
-      const sum = cutToLow8(pid.reduce((res, cur) => res += cur).toString('16'))
-      pid.push(sum)
-      this.write(Buffer.from(pid))
+      const buf = fixedPIDArrayToBuffer(array[i], i)
+      this.write(buf)
     }
+  }
+  requestPIDFromPlane() {
+    const request = [0xaa, 0xaf, 0x02, 0x01, 0x01]
+    const sum = cutToLow8(request)
+    request.push(sum)
+    const buf = Buffer.from(request)
+    this.write(buf)
   }
 
   onMessage(connection) {
@@ -39,6 +50,8 @@ class createSerialPort {
       } else if (isPIDInfo(data)) {
         const result = parserPIDInfo(data)
         if (!result.isLess) connection.sendText(createMessage(result, 2))
+      } else {
+        // 丢帧
       }
     }
     this.port.on('data', throttle(callback, 100))

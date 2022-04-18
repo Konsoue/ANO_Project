@@ -23,9 +23,10 @@ const changeInt32 = number => {
 
 /**
  * 取低八位，用于校验和
- * @param {string} string 16 进制的字符串
+ * @param {Array} array 数据的数组
  */
-const cutToLow8 = (string) => {
+const cutToLow8 = (array) => {
+  const string = array.reduce((res, cur) => res += cur, 0).toString('16')
   const map = {
     'A': 10,
     'B': 11,
@@ -111,10 +112,32 @@ const parserPIDInfo = (buffer) => {
   return result
 }
 
+/**
+ * 修复前端传来的 PID 的数据缺位问题
+ * @param {PIDArray} array
+ * @param {Number} index
+ * @return {Buffer}
+ */
+const fixedPIDArrayToBuffer = (array, index) => {
+  const tmp = []
+  for (var i = 0; i < array.length; i++) {
+    const string = array[i].toString(16)
+    const len = string.length
+    const low = (string[len - 2] || '0') + (string[len - 1] || '0')
+    const high = (string[len - 4] || '0') + (string[len - 3] || '0')
+    tmp.push(Number.parseInt(high, 16), Number.parseInt(low, 16))
+  }
+  tmp.unshift(0xaa, 0xaf, 16 + index, 18)
+  const sum = cutToLow8(tmp)
+  tmp.push(sum)
+  return Buffer.from(tmp)
+}
+
 module.exports = {
   parserActionInfo,
   isActionInfo,
   isPIDInfo,
   parserPIDInfo,
-  cutToLow8
+  cutToLow8,
+  fixedPIDArrayToBuffer
 }
