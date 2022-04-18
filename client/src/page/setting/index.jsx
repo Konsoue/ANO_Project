@@ -21,6 +21,12 @@ const Setting = () => {
       if (result.code === 2) {
         console.log(result);
         PIDToTableData(result.data)
+        const { setData } = tableRef.current
+        const newData = deepClone(dataSource)
+        setData(newData)
+        message.success('数据读取成功')
+      } else if (result.code === 3) {
+        message.success('读取数据存在问题')
       }
     }
     websocket.onMessage(callback);
@@ -39,15 +45,8 @@ const Setting = () => {
   }
 
   const readPID = () => {
-    const { setData } = tableRef.current
-    const newData = deepClone(dataSource)
-    setData(newData)
     websocket.send({ code: 11 })
-    if (com) {
-      message.success('PID 读取成功')
-    } else {
-      message.info('请打开串口')
-    }
+    if (!com) message.info('请打开串口')
   }
 
   const resetPID = () => {

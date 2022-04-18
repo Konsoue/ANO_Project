@@ -50,6 +50,7 @@ class createSerialPort {
       } else if (isPIDInfo(data)) {
         const result = parserPIDInfo(data)
         if (!result.isLess) connection.sendText(createMessage(result, 2))
+        else connection.sendText(createMessage(result, 3))
       } else {
         // 丢帧
       }
