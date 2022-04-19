@@ -5,7 +5,7 @@ const Plane = () => {
 
   return (
     <div id="tridiv">
-      <div className="scene" style={{ transform: 'rotateX(-45deg) rotateY(- 45deg)' }}>
+      <div className="scene" style={{ transform: 'rotateX(var(--pit)) rotateY(var(--yam)) rotateZ(var(--rol)) ' }}>
         <div className="shape cuboid-1 cub-1">
           <div className="face ft">
             <div className="photon-shader" style={{ backgroundColor: 'rgba(0, 0, 0, 0.208)' }}></div>
@@ -1060,7 +1060,7 @@ const Plane = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
 

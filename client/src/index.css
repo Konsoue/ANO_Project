@@ -3,7 +3,7 @@
 body {
   --pit: 0deg;
   --rol: 0deg;
-  --yam: 0deg;
+  --yam: -180deg;
 }
 
 .siderbar-container {

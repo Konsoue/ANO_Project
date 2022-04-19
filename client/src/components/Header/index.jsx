@@ -13,7 +13,9 @@ const { Title } = Typography;
 const setStyleVariate = (data) => {
   for (let key in data) {
     if (key === 'pit') {
-      document.body.style.setProperty(`--${key}`, `${data[key]}deg`);
+      document.body.style.setProperty(`--${key}`, `${-data[key]}deg`);
+    } else if (key === 'yam') {
+      document.body.style.setProperty(`--${key}`, `${-data[key] - 180}deg`);
     } else {
       document.body.style.setProperty(`--${key}`, `${-data[key]}deg`);
     }

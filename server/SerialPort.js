@@ -53,6 +53,7 @@ class createSerialPort {
         else connection.sendText(createMessage(result, 3))
       } else {
         // 丢帧
+        console.log('丢帧', data)
       }
     }
     this.port.on('data', throttle(callback, 100))

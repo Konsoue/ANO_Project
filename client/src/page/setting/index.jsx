@@ -26,7 +26,7 @@ const Setting = () => {
         setData(newData)
         message.success('数据读取成功')
       } else if (result.code === 3) {
-        message.success('读取数据存在问题')
+        message.info('读取数据存在问题')
       }
     }
     websocket.onMessage(callback);
